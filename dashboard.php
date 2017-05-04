@@ -6,35 +6,71 @@
                 <div class="card-content">
                     <h4 class="no-margin-top grey-text text-darken-3">Vehicles list</h4>
                     <br>
-                    <h5 class="light indigo-text"><i class="material-icons left">directions_car</i> ToniSaraCar</h5>
-                    <table>
+                    <?php
+                    $queryVehicles = mysqli_query($conn, "SELECT * FROM vehicles;");
+                    for ($i = 0; $i < $queryVehicles->num_rows; $i++) {
+                        $vehicle = $queryVehicles->fetch_object();
+                        ?>
+                        <h5 class="light indigo-text">
+                            <i class="material-icons left">
+                                <?php
+                                switch ($vehicle->type) {
+                                    case "terrain":
+                                        echo "directions_car";
+                                        break;
+
+                                    case "air":
+                                        echo "flight";
+                                        break;
+
+                                    case "marine":
+                                        echo "boat";
+                                        break;
+
+                                    default:
+                                        echo "directions_car";
+                                        break;
+                                }
+                                ?>
+                            </i> <?= $vehicle->name; ?></h5>
+                        <table class="light-table">
                         <tbody>
                         <tr>
                             <td width="40%">Status</td>
-                            <td><span class="green-text uppercase medium-text">operational</span></td>
+                            <td>
+                                <?php
+                                switch ($vehicle->status) {
+                                    case "offline":
+                                        echo '<span class="amber-text uppercase medium-text">';
+                                        break;
+                                    case "online":
+                                        echo '<span class="green-text uppercase medium-text">';
+                                        break;
+                                    case "warning":
+                                        echo '<span class="red-text uppercase medium-text">';
+                                        break;
+                                    case "damage":
+                                        echo '<span class="deep-orange-text uppercase medium-text">';
+                                        break;
+                                    default:
+                                        echo '<span class="amber-text uppercase medium-text">';
+                                        break;
+                                }
+                                echo $vehicle->status;
+                                ?>
+                                </span></td>
                         </tr>
                         <tr>
                             <td>IP</td>
-                            <td>10.0.0.1</td>
+                            <td id="vehicleIP"><?= $vehicle->lastIPAddress; ?></td>
                         </tr>
                         </tbody>
                     </table>
+                        <?php
+                        if ($i !== ($queryVehicles->num_rows - 1))
+                            echo '<hr class="divider">';
 
-                    <hr class="divider">
-
-                    <h5 class="light indigo-text"><i class="material-icons left">flight</i> FormeTeoDrone</h5>
-                    <table>
-                        <tbody>
-                        <tr>
-                            <td width="40%">Status</td>
-                            <td><span class="amber-text uppercase medium-text">offline</span></td>
-                        </tr>
-                        <tr>
-                            <td>IP</td>
-                            <td>10.0.0.1</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    } ?>
                 </div>
             </div>
         </div>
@@ -56,9 +92,10 @@
                     </div>
                 </div>
                 <div class="col s12">
-                    <div class="card">
-                        <canvas onclick="getMap()" class="card-content" id="map" style="height: 400px;">
-                        </canvas>
+                    <div class="card-panel">
+                        <!-- Sminchia la pagina in mobile -->
+                        <!--canvas onclick="getMap()" class="card-content" id="map" style="height: 400px;">
+                        </canvas>-->
                     </div>
                 </div>
             </div>

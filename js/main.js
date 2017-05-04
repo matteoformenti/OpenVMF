@@ -8,7 +8,6 @@ function getImage() {
 }
 
 function getLIDAR() {
-    console.log("ciao");
     $("#lidar").css("background-image", "url(http://10.3.1.163:1235/getLIDAR)");
 }
 
@@ -22,8 +21,7 @@ $(document).ready(function () {
             opacity: .5,
             inDuration: 100,
             outDuration: 100
-        }
-    );
+    });
     $('.collapsible').collapsible();
 });
 

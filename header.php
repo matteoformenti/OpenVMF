@@ -15,18 +15,17 @@ $user_obj = $query_user->fetch_object();
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection"/>
     <link href="css/style.css" rel="stylesheet" type="text/css">
 </head>
-<body class="grey darken-2">
-<nav class="indigo">
+<body>
+<nav class="green accent-3">
     <div class="nav-wrapper">
-        <a href="#" class="brand-logo light"><i class="material-icons button-collapse"
-                                                data-activates="side-menu">menu</i>OpenVMF
-            Control Center</a>
+        <a href="#" data-activates="side-menu" class="button-collapse show-on-medium-and-up"><i class="material-icons">menu</i></a>
+        <a href="#" class="brand-logo light">OpenVMF Control Center</a>
     </div>
     <ul id="side-menu" class="side-nav">
         <li>
             <div class="userView">
                 <div class="background">
-                    <img src="img/background.jpg" style="width: 100%">
+                    <img src="img/background.png" style="width: 100%">
                 </div>
                 <a href="#"><i class="material-icons large white-text" style="font-size: 6rem">person</i></a>
                 <a href="#"><span class="white-text name"><?= $user_obj->username ?></span></a>

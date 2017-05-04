@@ -1,7 +1,7 @@
 <?php
 function createConnection()
 {
-    return new mysqli("localhost", "root", "meT@416Uly", "openVMF");
+    return new mysqli("10.0.0.4", "openvmf", "Task634Keep", "openvmf");
 }
 
 function queryDB($query)

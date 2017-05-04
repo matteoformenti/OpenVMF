@@ -6,8 +6,8 @@ if (empty($_POST['username']) || empty($_POST['password'])) {
     echo "empty";
 } else {
     // Define $username and $password
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    $username = checkSQLSyntax(prep($_POST['username']));
+    $password = checkSQLSyntax(prep($_POST['password']));
 
     // Establishing Connection with Server by passing server_name, user_id and password as a parameter
     $query = queryDB("SELECT ID FROM users WHERE password='" . hashPassword($password) . "' AND username='$username'");
