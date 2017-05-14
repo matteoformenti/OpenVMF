@@ -13,7 +13,6 @@ public class Settings {
     public static int PARITY;
     public static int DISCOVERY_PORT;
     public static int CONTROL_PORT;
-    private static String POSITION_DELAY;
 
     @SuppressWarnings("ConstantConditions")
     static void init() {
@@ -22,7 +21,6 @@ public class Settings {
         SERIAL_BAUD_RATE = Integer.parseInt(DB.getSettings("SerialBaudRate"));
         SERVER_CONNECTION_PORT = DB.getSettings("ServerConnectionPort");
         CAMERA_UDP_PORT = DB.getSettings("CameraUDPPort");
-        POSITION_DELAY = DB.getSettings("PositionDelay");
         DATA_BITS = Integer.parseInt(DB.getSettings("DataBits"));
         STOP_BITS = Integer.parseInt(DB.getSettings("StopBits"));
         PARITY = Integer.parseInt(DB.getSettings("Parity"));

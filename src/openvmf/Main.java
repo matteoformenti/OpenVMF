@@ -9,20 +9,14 @@ public class Main {
     private static LidarService lidarService;
     private static EngineService engineService;
     private static LocationService locationService;
-    private static DiscoveryService discoveryService;
-    private static ServerConnection serverConnection;
 
     public static void main(String args[]) {
-        DB databaseConnection = new DB("ciao", "ciao");
+        new DB("omega", "Task634Keep");
         Settings.init();
-        discoveryService = new DiscoveryService();
-        serverConnection = new ServerConnection();
+        DiscoveryService discoveryService = new DiscoveryService();
+        ServerConnection serverConnection = new ServerConnection();
         new SerialDiscovery();
-        ControlServer controlServer = new ControlServer();
-    }
-
-    public static LidarService getLidarService() {
-        return lidarService;
+        new ControlServer();
     }
 
     public static void setLidarService(LidarService lidarService) {
@@ -37,19 +31,7 @@ public class Main {
         Main.engineService = engineService;
     }
 
-    public static LocationService getLocationService() {
-        return locationService;
-    }
-
     public static void setLocationService(LocationService locationService) {
         Main.locationService = locationService;
-    }
-
-    public static void stop() {
-        serverConnection.close();
-        discoveryService.close();
-        engineService.close();
-        locationService.close();
-        lidarService.close();
     }
 }

@@ -24,11 +24,11 @@ public class ControlServer {
                         byte[] buffer = new byte[9];
                         DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                         socket.receive(packet);
-                        String in = new String(packet.getData());
-                        System.out.println(in);
+                        String in = new String(packet.getData()).replaceAll("\u0000.*", "");
                         int speed = Integer.parseInt(in.split(":")[0]);
-                        int status = Integer.parseInt(in.split(":")[1]);
-                        int steer = Integer.parseInt(in.split(":")[2]);
+                        int steer = Integer.parseInt(in.split(":")[1]);
+                        int status = Integer.parseInt(in.split(":")[2]);
+                        System.out.println("Speed: " + speed + "\tSteer: " + steer + "\tStatus: " + status);
                         Main.getEngineService().setSpeed(speed);
                         Main.getEngineService().setSteer(steer);
                         Main.getEngineService().setState((status == 0) ? EngineService.states.FORWARD : (status == 1) ? EngineService.states.BACKWARD : EngineService.states.BRAKE);

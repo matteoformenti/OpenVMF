@@ -18,7 +18,8 @@ public class LidarService {
                 if (serialPortEvent.isRXCHAR()) {
                     try {
                         parsePosition(serialPort.readString().replaceAll("^[\\r\\n]+|\\.|[\\r\\n]+$", ""));
-                        send((byte) 1);
+                        if (!stop)
+                            send((byte) 1);
                     } catch (SerialPortException e) {
                         Logger.log("Error while reading data from LIDAR");
                     }
