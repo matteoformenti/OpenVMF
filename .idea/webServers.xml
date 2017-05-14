@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="d90624c0-42ee-4337-b861-65aa3d2a0d8f" name="UDOO" url="http://192.168.0.230">
+        <fileTransfer host="192.168.0.230" port="22" rootFolder="/home/omega/OpenVMF" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="100000" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

@@ -1,47 +1,55 @@
 package openvmf;
 
-import openvmf.com.DB;
-import openvmf.com.ServerConnection;
-import openvmf.nav.Map;
-import openvmf.phi.Vehicle;
-
-import java.util.ArrayList;
-import java.util.List;
+import openvmf.com.*;
+import openvmf.nav.EngineService;
+import openvmf.nav.LidarService;
+import openvmf.nav.LocationService;
 
 public class Main {
-    private static Vehicle vehicle;
-    private static ServerConnection server;
-    private static DB db;
+    private static LidarService lidarService;
+    private static EngineService engineService;
+    private static LocationService locationService;
+    private static DiscoveryService discoveryService;
+    private static ServerConnection serverConnection;
 
-    private static List<Thread> threadList = new ArrayList<>();
-
-    public static void main(String args[])
-    {
-//        db = new DB("localhost", "omega", "itmakerslogin");
-//        server = new ServerConnection();
-//        vehicle = new Vehicle();
-//        db.init();
+    public static void main(String args[]) {
+        DB databaseConnection = new DB("ciao", "ciao");
+        Settings.init();
+        discoveryService = new DiscoveryService();
+        serverConnection = new ServerConnection();
+        new SerialDiscovery();
+        ControlServer controlServer = new ControlServer();
     }
 
-    public static Vehicle getVehicle() {
-        return vehicle;
+    public static LidarService getLidarService() {
+        return lidarService;
     }
 
-    public static ServerConnection getServer() {
-        return server;
+    public static void setLidarService(LidarService lidarService) {
+        Main.lidarService = lidarService;
     }
 
-    public static DB getDb() {
-        return db;
+    public static EngineService getEngineService() {
+        return engineService;
     }
 
-    public static void registerThread(Thread t)
-    {
-        threadList.add(t);
+    public static void setEngineService(EngineService engineService) {
+        Main.engineService = engineService;
     }
 
-    public static void killThreads()
-    {
-        threadList.forEach(Thread::stop);
+    public static LocationService getLocationService() {
+        return locationService;
+    }
+
+    public static void setLocationService(LocationService locationService) {
+        Main.locationService = locationService;
+    }
+
+    public static void stop() {
+        serverConnection.close();
+        discoveryService.close();
+        engineService.close();
+        locationService.close();
+        lidarService.close();
     }
 }

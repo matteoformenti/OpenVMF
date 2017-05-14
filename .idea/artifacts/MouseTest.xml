@@ -1,0 +1,21 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="MouseTest">
+    <output-path>$PROJECT_DIR$/out/artifacts/MouseTest</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="test.mouse.Main" />
+        <option name="description" value="" />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="title" value="MouseTest" />
+        <option name="vendor" value="" />
+        <option name="version" value="" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="JavaFxApplication.jar">
+        <element id="module-output" name="JavaFxApplication" />
+      </element>
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/jssc-2.8.0.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
