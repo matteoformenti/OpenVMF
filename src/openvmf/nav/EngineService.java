@@ -12,6 +12,7 @@ public class EngineService {
     private String speed;
     private String steer;
     private states state;
+    private int steerOffset = 40;
 
     public EngineService(SerialPort serialPort) {
         this.serialPort = serialPort;
@@ -91,7 +92,7 @@ public class EngineService {
     }
 
     public void setSteer(int steer) {
-        this.steer = fillZero(steer);
+        this.steer = fillZero(steer + steerOffset);
         applyValues();
     }
 
