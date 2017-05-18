@@ -1,5 +1,6 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/functions.php");
+//include_once($_SERVER['DOCUMENT_ROOT'] . "/openVMF/functions.php");
 
 session_start();
 $user_check = $_SESSION['userID'];

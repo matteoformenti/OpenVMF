@@ -1,7 +1,8 @@
 <?php
 function createConnection()
 {
-    return new mysqli("10.0.0.4", "openvmf", "Task634Keep", "openvmf");
+//     return new mysqli("10.0.0.4", "openvmf", "Task634Keep", "openvmf");
+    return new mysqli("localhost", "root", "meT@416Uly", "openVMF");
 }
 
 function queryDB($query)
@@ -60,4 +61,13 @@ function checkSQLSyntax($in)
             $phrase .= $word . " ";
     }
     return rtrim($phrase, " ");
+}
+
+function getVehicleInfo($vehicleID)
+{
+    $query = queryDB("SELECT V.name, V.type, V.rotors, V.lastIPAddress, V.status, userVehicles.addedDate FROM vehicles V JOIN userVehicles ON V.ID = userVehicles.vehicleID WHERE userID = '" . $_SESSION['userID'] . "' AND V.ID = '" . $vehicleID . "';");
+    if ($query->num_rows > 0)
+        return $query->fetch_assoc();
+    else
+        return "error";
 }

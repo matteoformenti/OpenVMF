@@ -15,6 +15,7 @@
         <div class="col s12 m6 push-m3">
             <div class="card-panel center center-block">
                 <h1 class="center-align">OpenVMF Login</h1>
+                <p class="red-text medium-text" id="errorMessage"></p>
                 <div class="input-field">
                     <input type="text" placeholder="Username" id="username">
                 </div>
@@ -30,14 +31,23 @@
 <?php include_once('footer.php'); ?>
 <script>
     $(document).ready(function () {
+        $("main").on("keypress", function (e) {
+            if (e.keyCode === 13)
+                login();
+        });
+
         $("#submit").on("click", function () {
-            var a = $("#username"), b = $("#password");
-            "" != a.val() && "" != a.val() ? $.post("auth/login.php", {
-                username: a.val(),
-                password: b.val()
-            }, function (a) {
-                "ok" == a ? location.href = "dashboard.php" : ($("#errorMessage").text("Wrong username and/or password!"), $("#errorParent").show())
-            }) : ($("#errorMessage").text("Campo email e/o password non possono essere lasciati vuoti!"), $("#errorParent").show())
+            login();
         });
     });
+
+    function login() {
+        let a = $("#username"), b = $("#password");
+        "" !== a.val() && "" !== a.val() ? $.post("auth/login.php", {
+            username: a.val(),
+            password: b.val()
+        }, function (a) {
+            "ok" === a ? location.href = "dashboard.php" : ($("#errorMessage").text("Wrong username and/or password!"), $("#errorParent").show())
+        }) : ($("#errorMessage").text("Username and/or password fields are empty!"), $("#errorParent").show())
+    }
 </script>
