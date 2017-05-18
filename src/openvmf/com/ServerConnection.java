@@ -1,5 +1,7 @@
 package openvmf.com;
 
+import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamResolution;
 import com.sun.net.httpserver.HttpServer;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.PixelWriter;
@@ -8,6 +10,7 @@ import javafx.scene.paint.Color;
 import openvmf.Logger;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -15,10 +18,12 @@ import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class ServerConnection {
 
     private HttpServer httpServer;
+    private Webcam webcam;
 
     public ServerConnection() {
         try {
@@ -106,9 +111,58 @@ public class ServerConnection {
                             e1.printStackTrace();
                             break;
                         }
+                    case "getLogs":
+                        try {
+                            Connection connection = DB.getConnection();
+                            ResultSet resultSet = connection.createStatement().executeQuery("SELECT * FROM Log ORDER BY Time DESC");
+                            String out = "Logs:\n";
+                            while (resultSet.next()) {
+                                out += resultSet.getString(2) + ";" + resultSet.getString(3) + "\n";
+                            }
+                            e.sendResponseHeaders(200, out.length());
+                            e.getResponseBody().write(out.getBytes());
+                        } catch (SQLException e1) {
+                            e1.printStackTrace();
+                        }
+                        break;
+                    case "getSettings":
+                        try {
+                            Connection connection = DB.getConnection();
+                            ResultSet resultSet = connection.createStatement().executeQuery("SELECT * FROM Settings");
+                            String out = "Settings:\n";
+                            while (resultSet.next()) {
+                                out += resultSet.getString(1) + ";" + resultSet.getString(2) + "\n";
+                            }
+                            e.sendResponseHeaders(200, out.length());
+                            e.getResponseBody().write(out.getBytes());
+                        } catch (SQLException e1) {
+                            e1.printStackTrace();
+                        }
+                        break;
+                    case "resetLogs":
+                        try {
+                            Connection connection = DB.getConnection();
+                            connection.createStatement().execute("TRUNCATE TABLE Log");
+                            e.sendResponseHeaders(200, "OK".length());
+                            e.getResponseBody().write("OK".getBytes());
+                        } catch (SQLException e1) {
+                            e1.printStackTrace();
+                        }
+                        break;
+                    case "getImage":
+                        Logger.log("Building Webcam Image");
+                        File image = new File("cam.png");
+                        ImageIO.write(webcam.getImage(), "PNG", image);
+                        e.sendResponseHeaders(201, image.length());
+                        Files.copy(image.toPath(), e.getResponseBody());
+                        break;
                 }
             });
             httpServer.start();
+            webcam = Webcam.getDefault();
+            webcam.setCustomViewSizes(new Dimension[]{WebcamResolution.HD720.getSize()});
+            webcam.setViewSize(WebcamResolution.HD720.getSize());
+            webcam.open();
         } catch (IOException e) {
             e.printStackTrace();
         }

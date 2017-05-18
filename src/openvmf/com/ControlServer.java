@@ -28,7 +28,6 @@ public class ControlServer {
                         int speed = Integer.parseInt(in.split(":")[0]);
                         int steer = Integer.parseInt(in.split(":")[1]);
                         int status = Integer.parseInt(in.split(":")[2]);
-                        System.out.println("Speed: " + speed + "\tSteer: " + steer + "\tStatus: " + status);
                         Main.getEngineService().setSpeed(speed);
                         Main.getEngineService().setSteer(steer);
                         Main.getEngineService().setState((status == 0) ? EngineService.states.FORWARD : (status == 1) ? EngineService.states.BACKWARD : EngineService.states.BRAKE);

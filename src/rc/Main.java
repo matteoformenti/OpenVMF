@@ -51,7 +51,7 @@ public class Main {
             if (j != null) {
                 j.setCallback((linuxJoystick, linuxJoystickEvent) -> {
                     speed = map(linuxJoystick.getAxisState(1), 0, 255, true);
-                    steer = map(linuxJoystick.getAxisState(0), -20, 20, false);
+                    steer = map(linuxJoystick.getAxisState(0), -50, 50, false);
                     status = (linuxJoystick.getButtonState(0)) ? 2 : status;
                     System.out.println("Speed: " + speed + "\tSteer: " + steer + "\tStatus: " + ((status == 0) ? "FORWARD" : (status == 1) ? "BACKWARD" : "BRAKE"));
                     send();
@@ -69,7 +69,7 @@ public class Main {
             status = (in > 0) ? 1 : 0;
             return ((Math.abs(in) * 511 / (delta * 2)));
         } else {
-            return (in * 40 / (delta * 2));
+            return (in * 110 / (delta * 2));
         }
     }
 

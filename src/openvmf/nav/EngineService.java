@@ -11,12 +11,24 @@ public class EngineService {
     private boolean stop = false;
     private String speed;
     private String steer;
-    private states state;
-    private int steerOffset = 40;
+    private states state = states.BRAKE;
 
     public EngineService(SerialPort serialPort) {
         this.serialPort = serialPort;
         Logger.log("EngineService ready");
+        try {
+            serialPort.addEventListener(serialPortEvent -> {
+                if (serialPortEvent.isRXCHAR()) {
+                    try {
+                        System.out.println("Received:\t" + serialPort.readString());
+                    } catch (SerialPortException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } catch (SerialPortException e) {
+            e.printStackTrace();
+        }
     }
 
     @NotNull
@@ -92,13 +104,16 @@ public class EngineService {
     }
 
     public void setSteer(int steer) {
+        int steerOffset = 150;
         this.steer = fillZero(steer + steerOffset);
+        System.out.println("Steer value:\t" + steer);
         applyValues();
     }
 
     private void applyValues() {
         String data = speed + steer + getStateValue(state);
         try {
+            System.out.println("Data out:\t" + data);
             serialPort.writeString(data);
         } catch (SerialPortException e) {
             Logger.log("Error while sending engine data '" + data + "';");

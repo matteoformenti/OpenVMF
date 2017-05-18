@@ -18,7 +18,8 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="lwjgl" level="project" />
     <orderEntry type="library" name="LinuxJoystick" level="project" />
+    <orderEntry type="library" name="webcam-capture-0.3.10" level="project" />
+    <orderEntry type="library" name="bridj-0.6.2" level="project" />
   </component>
 </module>

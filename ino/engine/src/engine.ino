@@ -2,7 +2,7 @@
 #include <digitalWriteFast.h>
 
 #define SERIAL_BAUD_RATE 115200
-#define ENGINE_PIN 9
+#define ENGINE_PIN 6
 #define RELAY_0_PIN 2
 #define RELAY_1_PIN 3
 #define SERVO_PIN 9
@@ -14,6 +14,7 @@ void setup() {
   Serial.begin(SERIAL_BAUD_RATE);
   Serial.println("engine");
   steer.attach(SERVO_PIN);
+  steer.write(150);
 }
 
 void loop() {
@@ -40,6 +41,8 @@ void loop() {
           digitalWriteFast(RELAY_1_PIN, HIGH);
           break;
       }
-      steer.write((((int)in[3])-48)*100+(((int)in[4])-48)*10+(((int)in[5])-48));
+      int s = (((int)in[3])-48)*100+(((int)in[4])-48)*10+(((int)in[5])-48);
+      Serial.println(s);
+      steer.write(s);
   }
 }

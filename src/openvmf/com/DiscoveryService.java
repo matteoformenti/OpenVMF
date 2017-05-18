@@ -15,11 +15,11 @@ public class DiscoveryService {
     private boolean stop = false;
 
     public DiscoveryService() {
-        //UDPDiscovery();
-        HTTPDiscovery();
+        UDPDiscovery();
+        //HTTPDiscovery();
     }
 
-    public void close() {
+    private void close() {
         httpServer.stop(0);
         stop = true;
     }
@@ -33,6 +33,7 @@ public class DiscoveryService {
                 String composedMessage = composeMessage();
                 e.sendResponseHeaders(201, composedMessage.length());
                 e.getResponseBody().write(composedMessage.getBytes());
+                e.close();
                 if (e.getRequestURI().getPath().equals("/stop/"))
                     close();
             });
@@ -46,21 +47,27 @@ public class DiscoveryService {
         DatagramSocket serverSocket;
         try {
             serverSocket = new DatagramSocket(Settings.DISCOVERY_PORT);
-            byte[] receiveData = new byte[1024];
+            byte[] receiveData = new byte[9];
             byte[] sendData = composeMessage().getBytes();
-            while (!stop) {
-                DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-                serverSocket.receive(receivePacket);
-                String in = new String(receivePacket.getData());
-                System.out.println(in);
-                if (in.equals("discovery")) {
-                    InetAddress IPAddress = receivePacket.getAddress();
-                    int port = receivePacket.getPort();
-                    Logger.log("Discovery requested from " + IPAddress + ":" + port);
-                    DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
-                    serverSocket.send(sendPacket);
+            Thread UDPListenerThread = new Thread(() -> {
+                while (!stop) {
+                    try {
+                        DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+                        serverSocket.receive(receivePacket);
+                        String in = new String(receivePacket.getData());
+                        if (in.equals("discovery")) {
+                            InetAddress IPAddress = receivePacket.getAddress();
+                            int port = receivePacket.getPort();
+                            Logger.log("Discovery requested from " + IPAddress + ":" + port);
+                            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
+                            serverSocket.send(sendPacket);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
+            });
+            UDPListenerThread.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -71,7 +78,7 @@ public class DiscoveryService {
         out += Settings.VEHICLE_NAME + ":" + Settings.VEHICLE_TYPE + "\n";
         out += "HTTP:" + Settings.SERVER_CONNECTION_PORT + "\n";
         out += "CTR:" + Settings.CONTROL_PORT + "\n";
-        out += "CAM:" + Settings.CAMERA_UDP_PORT + "\n";
+        out += "CAM:" + Settings.CAMERA_UDP_PORT + "\n\r";
         return out;
     }
 }
