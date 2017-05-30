@@ -36,7 +36,7 @@ include_once('header.php'); ?>
                                         class="material-icons left">
                                 <?php
                                 switch ($vehicle->type) {
-                                    case "terrain":
+                                    case "car":
                                         echo "directions_car";
                                         break;
 
@@ -88,8 +88,9 @@ include_once('header.php'); ?>
                                     </span></td>
                             </tr>
                             <tr>
-                                <td>IP</td>
-                                <td id="vehicleIP-<?= $vehicle->name; ?>"><?= $vehicle->lastIPAddress; ?></td>
+                                <td>IP:port</td>
+                                <td id="vehicleIP-<?= $vehicle->name; ?>"><?= $vehicle->IPAddress; ?>
+                                    :<?= $vehicle->serverPort; ?></td>
                             </tr>
                             </tbody>
                         </table>
@@ -105,7 +106,7 @@ include_once('header.php'); ?>
                 <img src="/img/compass.svg" alt="Compass image" width="100%" id="compass-img">
                 <img src="/img/arrow_compass.svg" alt="Arrow Compass image" id="compass-arrow-img">
                 <br>
-                <h4 class="no-margin-bottom center-align">0°</h4>
+                <h4 class="no-margin-bot center-align">0°</h4>
             </div>
         </div>
 
@@ -113,20 +114,20 @@ include_once('header.php'); ?>
             <div class="row">
                 <div class="col s12 m6">
                     <div class="card-panel no-padding" style="line-height: 0" id="map">
-                        <img src="img/default.png" width="100%" alt="Map image" title="Map" id="img-map">
+                        <img src="img/no-map.svg" width="100%" alt="Map image" title="Map" id="img-map">
                     </div>
                 </div>
                 <div class="col s12 m6">
                     <div class="card" id="lidar">
                         <div class="card-content no-padding" style="line-height: 0">
-                            <img src="img/default.png" width="100%" alt="LIDAR image" title="LIDAR" id="img-lidar">
+                            <img src="img/no-lidar.svg" width="100%" alt="LIDAR image" title="LIDAR" id="img-lidar">
                         </div>
                     </div>
                 </div>
                 <div class="col s12">
                     <div class="card" id="cam">
                         <div class="card-content no-padding" style="line-height: 0">
-                            <img src="img/default.png" width="100%" alt="Webcam image" title="WEBCAM" id="img-cam">
+                            <img src="img/no-webcam.svg" width="100%" alt="Webcam image" title="WEBCAM" id="img-cam">
                         </div>
                     </div>
                 </div>

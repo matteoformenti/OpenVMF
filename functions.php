@@ -1,4 +1,23 @@
 <?php
+/**
+ * This file is part of OpenVMF.
+ *
+ * OpenVMF is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * OpenVMF is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OpenVMF.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * OpenVMF is an ITMakers' project. Please see our website <http://www.itmakers.org/>.
+ */
+
 function createConnection()
 {
 //     return new mysqli("10.0.0.4", "openvmf", "Task634Keep", "openvmf");
@@ -65,9 +84,9 @@ function checkSQLSyntax($in)
 
 function getVehicleInfo($vehicleID)
 {
-    $query = queryDB("SELECT V.name, V.type, V.rotors, V.lastIPAddress, V.status, userVehicles.addedDate FROM vehicles V JOIN userVehicles ON V.ID = userVehicles.vehicleID WHERE userID = '" . $_SESSION['userID'] . "' AND V.ID = '" . $vehicleID . "';");
+    $query = queryDB("SELECT V.ID, V.name, V.type, V.status, V.IPAddress, V.serverPort, V.safetyControlTimeout, V.serialBaudRate, V.positionDelay, V.stopBits, V.parityBit, V.dataBits, userVehicles.addedDate FROM vehicles V JOIN userVehicles ON V.ID = userVehicles.vehicleID WHERE userID = '" . $_SESSION['userID'] . "' AND V.ID = '" . $vehicleID . "';");
     if ($query->num_rows > 0)
-        return $query->fetch_assoc();
+        return $query->fetch_object();
     else
         return "error";
 }

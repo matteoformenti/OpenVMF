@@ -6,24 +6,20 @@
 </div>
 <div class="modal" id="about-us">
     <div class="modal-content">
-        <h3>OpenVMF (Alpha 2)</h3>
-        <p>Build: 2017-05-18</p>
-        <p>Version: 0.0.16</p>
+        <h3>OpenVMF (Alpha 4)</h3>
+        <p>Build: 2017-05-30</p>
+        <p>Version: 0.0.12</p>
         <p>ITMakers © 2017 Copyright. openVMF is an ITMakers' project.</p>
     </div>
 </div>
 
-<div class="modal" id="vehicle-modal">
+<div class="modal modal-fixed-footer" id="vehicle-modal">
     <div class="modal-content">
         <h3 id="vehicle-name"></h3>
 
     </div>
     <div class="modal-footer">
-        <button type="button" class="modal-action modal-close btn red waves-effect waves-light"
-                style="margin-left: 10px;">Close
-        </button>
-        <button type="button" class="modal-action btn yellow accent-3 black-text waves-effect waves-ripple">Edit
-        </button>
+        <button type="button" class="modal-action modal-close btn red waves-effect waves-light">Close</button>
     </div>
 </div>
 

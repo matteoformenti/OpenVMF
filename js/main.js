@@ -46,30 +46,30 @@ function init() {
         getImage(selectedIP);
     }, 1000);
 }
-// window.onload = init;
+//window.onload = init;
 
 function getLIDAR(IP) {
-    $("#lidar").find(".card-content").find("img").attr("src", 'http://' + IP + ':1235/getLIDAR');
+    $("#lidar").find(".card-content").find("img").attr("src", 'http://' + IP + '/getLIDAR');
 }
 
 function getMap(IP) {
-    $("#map").find("img").attr("src", 'http://' + IP + ':1235/getMap');
+    $("#map").find("img").attr("src", 'http://' + IP + '/getMap');
 }
 
 function getImage(IP) {
-    $("#cam").find("img").attr("src", 'http://' + IP + ':1235/getImage');
+    $("#cam").find("img").attr("src", 'http://' + IP + '/getImage');
 }
 
 function adjustCompassDirection(IP) {
     let deg = 0;
-    $.get('http://' + IP + ':1235/getCompass').done(function (data) {
+    $.get('http://' + IP + '/getCompass').done(function (data) {
         console.log(data);
     });
     $("#compass-arrow-img").css("transform", "rotate(" + deg + "deg)");
 }
 
 function getDirectionCompass(IP) {
-    $("#direction").find("img").attr("src", 'http://' + IP + ':1235/getCompass');
+    $("#direction").find("img").attr("src", 'http://' + IP + '/getCompass');
 }
 
 function checkConnection() {
@@ -86,8 +86,13 @@ function checkConnection() {
 
 function searchVehicle() {
     let vehicleIP = $("#vehicle_ip").val();
-    $.get("http://" + vehicleIP + ":1235/getInfo").done(function (data) {
-        console.log(data);
+    $.get("http://" + vehicleIP + ":1235/getSettings").done(function (data) {
+        $.post("post-functions.php", {
+            function: "insertNewVehicle",
+            data: data
+        }).done(function (data) {
+            console.log(data);
+        })
     });
 }
 
@@ -120,25 +125,34 @@ function openVehicleModal(vehicleID) {
         vehicleID: vehicleID
     }).done(function (data) {
         let vehicleInfo = data.split(";");
-        let vehicleIcon = "";
-        switch (vehicleInfo[1]) {
-            case "terrain":
-                vehicleIcon = "directions_car";
-                break;
-            case "air":
-                vehicleIcon = "flight";
-                break;
-            case "marine":
-                vehicleIcon = "boat";
-                break;
-            default:
-                vehicleIcon = "directions_car";
-                break;
+        let vehicleName = "", vehicleIcon = "", vehicleTable = "";
+        for (let index in vehicleInfo) {
+            let splitVehicle = vehicleInfo[index].split("§");
+            if (splitVehicle[0] === "Name")
+                vehicleName = splitVehicle[1];
+            else if (splitVehicle[0] === "Type") {
+                switch (vehicleInfo[1]) {
+                    case "terrain":
+                        vehicleIcon = "directions_car";
+                        break;
+                    case "air":
+                        vehicleIcon = "flight";
+                        break;
+                    case "marine":
+                        vehicleIcon = "boat";
+                        break;
+                    default:
+                        vehicleIcon = "directions_car";
+                        break;
+                }
+            }
+            else if (splitVehicle[0] === "Status") {
+                vehicleContentDiv.append("<h3 class='no-margin'><i class='material-icons right medium blue-text text-accent-3'>" + vehicleIcon + "</i> " + vehicleName + " <span style='font-size: 45%' class='uppercase blue-text'>" + splitVehicle[1] + "</span></h3>");
+            }
+            else
+                vehicleTable += "<tr><td>" + splitVehicle[0] + "</td><td>" + splitVehicle[1] + "</td></tr>";
         }
-        vehicleContentDiv.append("<h3><i class='material-icons right medium blue-text text-accent-3'>" + vehicleIcon + "</i> " + vehicleInfo[0] + " <span style='font-size: 45%' class='uppercase blue-text'>" + vehicleInfo[4] + "</span></h3>");
-        vehicleContentDiv.append("<p class='no-margin'>Rotors number: " + vehicleInfo[2] + "</p>");
-        vehicleContentDiv.append("<p class='no-margin'>Last IP Addr.: " + vehicleInfo[3] + "</p>");
-        vehicleContentDiv.append("<p class='no-margin'>Vehicle added on: " + vehicleInfo[5] + "</p>");
+        vehicleContentDiv.append("<table class='responsive-table striped'><thead><tr><th>Property</th><th>Value</th></tr></thead><tbody>" + vehicleTable + "</tbody></table>");
         $("#vehicle-modal").modal('open');
     })
 }
