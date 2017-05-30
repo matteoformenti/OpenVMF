@@ -21,7 +21,7 @@
 include_once('header.php'); ?>
 <main>
     <div class="row">
-        <div class="col s12 m4">
+        <div class="col s12 m4 l3">
             <div class="card">
                 <div class="card-content">
                     <h4 class="no-margin-top grey-text text-darken-3">Vehicles list</h4>
@@ -32,7 +32,8 @@ include_once('header.php'); ?>
                         $vehicle = $queryVehicles->fetch_object();
                         ?>
                         <h5 class="light-blue-text text-accent-4">
-                            <i class="material-icons left">
+                            <span class="pointer" onclick="openVehicleModal(<?= $vehicle->ID; ?>)"><i
+                                        class="material-icons left">
                                 <?php
                                 switch ($vehicle->type) {
                                     case "terrain":
@@ -52,7 +53,7 @@ include_once('header.php'); ?>
                                         break;
                                 }
                                 ?>
-                            </i> <?= $vehicle->name; ?>
+                                </i> <?= $vehicle->name; ?></span>
                             <span class="right" id="vehicle-selection">
                                 <input type="radio" name="selected" class="with-gap" id="select-<?= $vehicle->name; ?>"
                                     <?php if ($vehicle->status == "online") echo 'checked'; ?>>
@@ -100,25 +101,19 @@ include_once('header.php'); ?>
                 </div>
             </div>
 
-            <!-- Discovery card -->
-            <div class="card-panel">
-                <h5>Discovery vehicles</h5>
-                <button type="button" class="btn yellow accent-3 waves-effect waves-light black-text"
-                        onclick="discoverDrones()">Start discovering
-                </button>
-                <article id="discoveredVehicles">
-
-                </article>
+            <div class="card-panel" id="direction">
+                <img src="/img/compass.svg" alt="Compass image" width="100%" id="compass-img">
+                <img src="/img/arrow_compass.svg" alt="Arrow Compass image" id="compass-arrow-img">
+                <br>
+                <h4 class="no-margin-bottom center-align">0°</h4>
             </div>
         </div>
 
-        <div class="col s12 m8">
+        <div class="col s12 m8 l9">
             <div class="row">
                 <div class="col s12 m6">
-                    <div class="card" style="height: 400px">
-                        <div class="card-content">
-                            <h6>FRONT_CAM</h6>
-                        </div>
+                    <div class="card-panel no-padding" style="line-height: 0" id="map">
+                        <img src="img/default.png" width="100%" alt="Map image" title="Map" id="img-map">
                     </div>
                 </div>
                 <div class="col s12 m6">
@@ -129,11 +124,10 @@ include_once('header.php'); ?>
                     </div>
                 </div>
                 <div class="col s12">
-                    <div class="card-panel no-padding" style="line-height: 0" id="map">
-                        <img src="img/default.png" width="100%" alt="Map image" title="Map" id="img-map">
-                        <!-- Sminchia la pagina in mobile -->
-                        <!--canvas onclick="getMap()" class="card-content" id="map" style="height: 400px;">
-                        </canvas>-->
+                    <div class="card" id="cam">
+                        <div class="card-content no-padding" style="line-height: 0">
+                            <img src="img/default.png" width="100%" alt="Webcam image" title="WEBCAM" id="img-cam">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -148,7 +142,7 @@ include_once('header.php'); ?>
         <input type="text" placeholder="Vehicle IP" id="vehicle_ip">
     </div>
     <div class="modal-footer">
-        <div class="btn yellow accent-3 waves-effect waves-light black-text" onclick="checkConnection()">Connetti</div>
+        <div class="btn yellow accent-3 waves-effect waves-light black-text" onclick="searchVehicle()">Connetti</div>
     </div>
 </div>
 <?php include_once('footer.php'); ?>

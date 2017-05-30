@@ -27,6 +27,8 @@ $(document).ready(function () {
     });
     $('.collapsible').collapsible();
     $(".button-collapse").sideNav();
+
+    adjustCompassImgs();
 });
 
 function init() {
@@ -38,8 +40,13 @@ function init() {
         getLIDAR(selectedIP);
         getMap(selectedIP);
     }, 1000);
+
+    window.setInterval(function () {
+        selectedIP = getSelectedIP();
+        getImage(selectedIP);
+    }, 1000);
 }
-//window.onload = init;
+// window.onload = init;
 
 function getLIDAR(IP) {
     $("#lidar").find(".card-content").find("img").attr("src", 'http://' + IP + ':1235/getLIDAR');
@@ -49,30 +56,54 @@ function getMap(IP) {
     $("#map").find("img").attr("src", 'http://' + IP + ':1235/getMap');
 }
 
+function getImage(IP) {
+    $("#cam").find("img").attr("src", 'http://' + IP + ':1235/getImage');
+}
+
+function adjustCompassDirection(IP) {
+    let deg = 0;
+    $.get('http://' + IP + ':1235/getCompass').done(function (data) {
+        console.log(data);
+    });
+    $("#compass-arrow-img").css("transform", "rotate(" + deg + "deg)");
+}
+
+function getDirectionCompass(IP) {
+    $("#direction").find("img").attr("src", 'http://' + IP + ':1235/getCompass');
+}
+
 function checkConnection() {
-    console.log(selectedIP);
-    $.ajax({
-        url: "http://" + selectedIP + ":1234",
-        type: 'post'
-    }).done(function (data, statusText, xhr) {
-        let status = xhr.status;                //200
-        let head = xhr.getAllResponseHeaders(); //Detail header info
-        console.log(status + "\n\r" + statusText);
+    let ipList = new Array;
+
+    $.post("post-functions.php", {
+        function: "checkConnection",
+        IPs: ipList
+    }).done(function (data) {
+        if (data != "ok")
+            console.log(data);
+    });
+}
+
+function searchVehicle() {
+    let vehicleIP = $("#vehicle_ip").val();
+    $.get("http://" + vehicleIP + ":1235/getInfo").done(function (data) {
+        console.log(data);
     });
 }
 
 function discoverDrones() {
     let pane = $("#discoveredVehicles");
     pane.html("");
-    $.ajax({
-        url: "http://255.255.255.255:1234",   // Broadcast IP
-        type: 'post'
-    }).done(function (data, statusText, xhr) {
-        let status = xhr.status;                //200
-        let head = xhr.getAllResponseHeaders(); //Detail header info
-        console.log(status + "\n\r" + statusText);
-
-        pane.html("<h3>Yeah!</h3>");
+    $.post("post-functions.php", {
+        function: 'discovery',
+    }).done(function (data) {
+        if (data != "") {
+            let info = data.split("\n");
+            for (let i in info)
+                pane.append("<p class='no-margin-bot'>" + info[i] + "</p>");
+        }
+        else
+            pane.html("<p class='no-margin-bot'>No vehicles found.</p>");
     });
 }
 
@@ -110,4 +141,16 @@ function openVehicleModal(vehicleID) {
         vehicleContentDiv.append("<p class='no-margin'>Vehicle added on: " + vehicleInfo[5] + "</p>");
         $("#vehicle-modal").modal('open');
     })
+}
+
+function adjustCompassImgs() {
+    let compassImg = $("#compass-img");
+    let compassArrowImg = $("#compass-arrow-img");
+    let titleCompass = $("#direction").find("h5");
+
+    compassArrowImg.width(compassImg.height() * 47 / 455);
+    let marginTop = compassArrowImg.height() + (compassImg.height() / 2 - compassArrowImg.height() / 2) + 5;
+    let marginLeft = compassImg.width() / 2 - compassArrowImg.width() / 2;
+    compassArrowImg.css("margin-top", "-" + marginTop + "px");
+    compassArrowImg.css("margin-left", marginLeft + "px");
 }

@@ -30,6 +30,10 @@ if (isset($_POST['function'])) {
             echo $info . ";";
         }
 
+    } else if ($_POST['function'] === "discovery") {
+        $out = shell_exec("echo -n \"discovery\" | socat - udp-datagram:255.255.255.255:1234,broadcast");
+        echo $out;
+        die();
     } else
         echo "function_error";
 }

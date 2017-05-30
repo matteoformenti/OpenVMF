@@ -6,9 +6,9 @@
 </div>
 <div class="modal" id="about-us">
     <div class="modal-content">
-        <h3>OpenVMF (Alpha 1)</h3>
-        <p>Build: 2017-04-11</p>
-        <p>Version: 0.0.10</p>
+        <h3>OpenVMF (Alpha 2)</h3>
+        <p>Build: 2017-05-18</p>
+        <p>Version: 0.0.16</p>
         <p>ITMakers © 2017 Copyright. openVMF is an ITMakers' project.</p>
     </div>
 </div>

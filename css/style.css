@@ -57,6 +57,11 @@ blockquote {
     border-left: 5px solid #4486fa !important;
 }
 
+#compass-arrow-img {
+    position: relative;
+    float: left;
+}
+
 /* label color */
 .input-field label {
     color: #000;
