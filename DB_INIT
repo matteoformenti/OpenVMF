@@ -1,0 +1,56 @@
+CREATE TABLE Log
+(
+  Id      INT AUTO_INCREMENT
+    PRIMARY KEY,
+  Time    TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  Message TEXT                                NULL
+);
+
+CREATE TABLE Points
+(
+  Id        INT AUTO_INCREMENT
+    PRIMARY KEY,
+  Position  INT   NOT NULL,
+  Rotation  FLOAT NOT NULL,
+  Distance0 INT   NOT NULL,
+  Distance1 INT   NOT NULL,
+  Distance2 INT   NOT NULL,
+  Distance3 INT   NOT NULL
+);
+
+CREATE INDEX Position
+  ON Points (Position);
+
+CREATE TABLE Positions
+(
+  Id      INT AUTO_INCREMENT
+    PRIMARY KEY,
+  Time    TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  PosX    FLOAT                               NOT NULL,
+  PosY    FLOAT                               NOT NULL,
+  Heading FLOAT                               NOT NULL
+);
+
+ALTER TABLE Points
+  ADD CONSTRAINT Points_ibfk_1
+FOREIGN KEY (Position) REFERENCES ADP.Positions (Id);
+
+CREATE TABLE Settings
+(
+  Name  VARCHAR(20) NOT NULL
+    PRIMARY KEY,
+  Value TEXT        NULL
+);
+
+INSERT INTO ADP.Settings (Name, Value) VALUES ('CameraUDPPort', '1236');
+INSERT INTO ADP.Settings (Name, Value) VALUES ('ControlPort', '1237');
+INSERT INTO ADP.Settings (Name, Value) VALUES ('DataBits', '8');
+INSERT INTO ADP.Settings (Name, Value) VALUES ('DiscoveryPort', '1234');
+INSERT INTO ADP.Settings (Name, Value) VALUES ('Parity', '0');
+INSERT INTO ADP.Settings (Name, Value) VALUES ('PositionDelay', '50');
+INSERT INTO ADP.Settings (Name, Value) VALUES ('SafetyControlTimeout', '500');
+INSERT INTO ADP.Settings (Name, Value) VALUES ('SerialBaudRate', '115200');
+INSERT INTO ADP.Settings (Name, Value) VALUES ('ServerConnectionPort', '1235');
+INSERT INTO ADP.Settings (Name, Value) VALUES ('StopBits', '1');
+INSERT INTO ADP.Settings (Name, Value) VALUES ('VehicleName', 'ToniSaraCar');
+INSERT INTO ADP.Settings (Name, Value) VALUES ('VehicleType', 'Car');
