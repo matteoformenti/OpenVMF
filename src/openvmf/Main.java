@@ -9,6 +9,7 @@ public class Main {
     private static LidarService lidarService;
     private static EngineService engineService;
     private static LocationService locationService;
+    private static ControlServer controlServer;
 
     public static void main(String args[]) {
         new DB("omega", "Task634Keep");
@@ -16,7 +17,11 @@ public class Main {
         DiscoveryService discoveryService = new DiscoveryService();
         ServerConnection serverConnection = new ServerConnection();
         new SerialDiscovery();
-        new ControlServer();
+        controlServer = new ControlServer();
+    }
+
+    public static ControlServer getControlServer() {
+        return controlServer;
     }
 
     public static void setLidarService(LidarService lidarService) {

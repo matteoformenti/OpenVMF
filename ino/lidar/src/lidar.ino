@@ -28,7 +28,7 @@ void setup() {
   Serial.begin(115200);
   Serial.println("lidar");
   pinModeFast(13, OUTPUT);
-  digitalWrite(DIR_PIN, HIGH);
+  digitalWriteFast(DIR_PIN, HIGH);
 }
 
 void loop() {

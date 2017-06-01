@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DB {
-    private static final String DB_IP = "10.3.1.218";
+    private static final String DB_IP = "10.3.1.147";
     //private static final String DB_IP = "localhost";
     //private static final String DB_IP = "10.42.0.163";
     private static Connection dbConnection;
@@ -72,6 +72,19 @@ public class DB {
             Logger.log("[ERROR] SQL Exception while inserting points");
             e.printStackTrace();
         }
+    }
+
+    static String getLastCompass() {
+        try {
+            ResultSet result = dbConnection.createStatement().executeQuery("SELECT Heading FROM Positions ORDER BY Id DESC LIMIT 1");
+            result.next();
+            String out = result.getString(1);
+            result.close();
+        } catch (SQLException e) {
+            Logger.log("[ERROR] SQL Exception while retriving compass");
+            return "null";
+        }
+        return "null";
     }
 
     static Connection getConnection() {

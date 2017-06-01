@@ -13,6 +13,7 @@ public class Settings {
     public static int PARITY;
     public static int DISCOVERY_PORT;
     public static int CONTROL_PORT;
+    public static int SAFETY_CONTROL_TIMEOUT;
 
     @SuppressWarnings("ConstantConditions")
     static void init() {
@@ -26,5 +27,6 @@ public class Settings {
         PARITY = Integer.parseInt(DB.getSettings("Parity"));
         DISCOVERY_PORT = Integer.parseInt(DB.getSettings("DiscoveryPort"));
         CONTROL_PORT = Integer.parseInt(DB.getSettings("ControlPort"));
+        SAFETY_CONTROL_TIMEOUT = Integer.parseInt(DB.getSettings("SafetyControlTimeout"));
     }
 }

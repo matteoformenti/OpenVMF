@@ -156,13 +156,20 @@ public class ServerConnection {
                         e.sendResponseHeaders(201, image.length());
                         Files.copy(image.toPath(), e.getResponseBody());
                         break;
+                    case "startManualControl":
+                        break;
+                    case "getCompass":
+                        String out = DB.getLastCompass();
+                        e.sendResponseHeaders(201, out.length());
+                        e.getResponseBody().write(out.getBytes());
+                        break;
                 }
             });
             httpServer.start();
             webcam = Webcam.getDefault();
             webcam.setCustomViewSizes(new Dimension[]{WebcamResolution.HD720.getSize()});
             webcam.setViewSize(WebcamResolution.HD720.getSize());
-            webcam.open();
+            //webcam.open();
         } catch (IOException e) {
             e.printStackTrace();
         }
