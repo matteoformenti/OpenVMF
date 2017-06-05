@@ -26,8 +26,8 @@ void loop() {
   {
       char in[MAX_INPUT_LENGTH];
       Serial.readBytes(in, MAX_INPUT_LENGTH);
-      int a = (((int)in[0])-48)*100+(((int)in[1])-48)*10+(((int)in[2])-48);
-      analogWrite(ENGINE_PIN, a);
+      //int a = (((int)in[0])-48)*100+(((int)in[1])-48)*10+(((int)in[2])-48);
+      analogWrite(ENGINE_PIN, (((int)in[0])-48)*100+(((int)in[1])-48)*10+(((int)in[2])-48));
       switch (in[6])
       {
         case '0':
@@ -46,8 +46,7 @@ void loop() {
           digitalWriteFast(RELAY_1_PIN, HIGH);
           break;
       }
-      int s = (((int)in[3])-48)*100+(((int)in[4])-48)*10+(((int)in[5])-48);
-      Serial.println(a);
-      steer.write(s);
+      //int s = (((int)in[3])-48)*100+(((int)in[4])-48)*10+(((int)in[5])-48);
+      steer.write((((int)in[3])-48)*100+(((int)in[4])-48)*10+(((int)in[5])-48));
   }
 }

@@ -3,6 +3,7 @@ package openvmf.nav;
 import jssc.SerialPort;
 import jssc.SerialPortException;
 import openvmf.Logger;
+import openvmf.Settings;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,22 +14,21 @@ public class EngineService {
     private String steer;
     private states state = states.BRAKE;
 
+    private boolean manualControl = true;
+    private long lastCommandTime;
+
     public EngineService(SerialPort serialPort) {
         this.serialPort = serialPort;
         Logger.log("EngineService ready");
-        try {
-            serialPort.addEventListener(serialPortEvent -> {
-                if (serialPortEvent.isRXCHAR()) {
-                    try {
-                        System.out.println("Received:\t" + serialPort.readString());
-                    } catch (SerialPortException e) {
-                        e.printStackTrace();
-                    }
+        Thread safetyThread = new Thread(() -> {
+            while (!stop) {
+                if ((System.nanoTime() / 1000000) - lastCommandTime >= Settings.SAFETY_CONTROL_TIMEOUT && manualControl) {
+                    state = states.BRAKE;
+                    setSpeed(0);
                 }
-            });
-        } catch (SerialPortException e) {
-            e.printStackTrace();
-        }
+            }
+        });
+        safetyThread.start();
     }
 
     @NotNull
@@ -73,7 +73,7 @@ public class EngineService {
         return "0";
     }
 
-    public void close() {
+    public void kill() {
         try {
             serialPort.closePort();
         } catch (SerialPortException e) {
@@ -113,8 +113,8 @@ public class EngineService {
     private void applyValues() {
         String data = speed + steer + getStateValue(state);
         try {
-            System.out.println("Data out:\t" + data);
             serialPort.writeString(data);
+            lastCommandTime = (System.nanoTime() / 1000000);
         } catch (SerialPortException e) {
             Logger.log("Error while sending engine data '" + data + "';");
         }
