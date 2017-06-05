@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="LinuxJoystick">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/LinuxJoystick.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
