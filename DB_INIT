@@ -1,15 +1,13 @@
 CREATE TABLE Log
 (
-  Id      INT AUTO_INCREMENT
-    PRIMARY KEY,
-  Time    TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-  Message TEXT                                NULL
+  Id    INT AUTO_INCREMENT  PRIMARY KEY,
+  Time  TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  Message TEXT  NULL
 );
 
 CREATE TABLE Points
 (
-  Id        INT AUTO_INCREMENT
-    PRIMARY KEY,
+  Id        INT AUTO_INCREMENT  PRIMARY KEY,
   Position  INT   NOT NULL,
   Rotation  FLOAT NOT NULL,
   Distance0 INT   NOT NULL,
@@ -23,8 +21,7 @@ CREATE INDEX Position
 
 CREATE TABLE Positions
 (
-  Id      INT AUTO_INCREMENT
-    PRIMARY KEY,
+  Id      INT AUTO_INCREMENT  PRIMARY KEY,
   Time    TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
   PosX    FLOAT                               NOT NULL,
   PosY    FLOAT                               NOT NULL,
@@ -37,9 +34,8 @@ FOREIGN KEY (Position) REFERENCES ADP.Positions (Id);
 
 CREATE TABLE Settings
 (
-  Name  VARCHAR(20) NOT NULL
-    PRIMARY KEY,
-  Value TEXT        NULL
+  Name  VARCHAR(20) NOT NULL  PRIMARY KEY,
+  Value TEXT  NULL
 );
 
 INSERT INTO ADP.Settings (Name, Value) VALUES ('CameraUDPPort', '1236');
