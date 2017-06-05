@@ -4,8 +4,6 @@ import jssc.SerialPort;
 import jssc.SerialPortException;
 import openvmf.Logger;
 import openvmf.Settings;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 public class EngineService {
     private SerialPort serialPort;
@@ -31,7 +29,7 @@ public class EngineService {
         safetyThread.start();
     }
 
-    @NotNull
+
     private static String fillZero(int in) {
         char out[] = new char[3];
         char inArray[] = (in + "").toCharArray();
@@ -60,7 +58,6 @@ public class EngineService {
         return new String(out);
     }
 
-    @Contract(pure = true)
     private static String getStateValue(states s) {
         switch (s) {
             case FORWARD:
