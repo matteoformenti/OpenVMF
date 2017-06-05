@@ -18,7 +18,7 @@ public class ControlServer {
     public ControlServer() {
         try {
             socket = new DatagramSocket(Settings.CONTROL_PORT);
-            Thread udpComandListener = new Thread(() -> {
+            Thread umpCommandListener = new Thread(() -> {
                 while (!stop) {
                     try {
                         byte[] buffer = new byte[9];
@@ -37,8 +37,8 @@ public class ControlServer {
                     }
                 }
             });
-            udpComandListener.setName("UDP Command Listener");
-            udpComandListener.start();
+            umpCommandListener.setName("UDP Command Listener");
+            umpCommandListener.start();
             Logger.log("UPD Connection Listener started");
         } catch (SocketException e) {
             e.printStackTrace();

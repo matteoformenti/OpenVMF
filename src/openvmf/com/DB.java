@@ -52,7 +52,7 @@ public class DB {
             result.close();
             return out;
         } catch (SQLException e) {
-            Logger.log("[ERROR] SQL Exception while retriving setting");
+            Logger.log("[ERROR] SQL Exception while retrieving setting");
             return null;
         }
     }
@@ -81,7 +81,7 @@ public class DB {
             String out = result.getString(1);
             result.close();
         } catch (SQLException e) {
-            Logger.log("[ERROR] SQL Exception while retriving compass");
+            Logger.log("[ERROR] SQL Exception while retrieving compass");
             return "null";
         }
         return "null";
