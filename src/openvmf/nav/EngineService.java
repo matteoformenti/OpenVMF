@@ -8,12 +8,12 @@ import openvmf.Settings;
 public class EngineService {
     private SerialPort serialPort;
     private boolean stop = false;
-    private String speed;
-    private String steer;
+    private String speed = "000";
+    private String steer = "150";
     private states state = states.BRAKE;
 
     private boolean manualControl = true;
-    private long lastCommandTime;
+    private int lastCommandTime;
 
     public EngineService(SerialPort serialPort) {
         this.serialPort = serialPort;
@@ -26,7 +26,7 @@ public class EngineService {
                 }
             }
         });
-        safetyThread.start();
+        //safetyThread.start();
     }
 
 
@@ -103,7 +103,6 @@ public class EngineService {
     public void setSteer(int steer) {
         int steerOffset = 150;
         this.steer = fillZero(steer + steerOffset);
-        System.out.println("Steer value:\t" + steer);
         applyValues();
     }
 
@@ -111,7 +110,7 @@ public class EngineService {
         String data = speed + steer + getStateValue(state);
         try {
             serialPort.writeString(data);
-            lastCommandTime = (System.nanoTime() / 1000000);
+            lastCommandTime = (int) (System.nanoTime() / 1000000);
         } catch (SerialPortException e) {
             Logger.log("Error while sending engine data '" + data + "';");
         }

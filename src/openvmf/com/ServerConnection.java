@@ -1,7 +1,5 @@
 package openvmf.com;
 
-import com.github.sarxos.webcam.Webcam;
-import com.github.sarxos.webcam.WebcamResolution;
 import com.sun.net.httpserver.HttpServer;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.PixelWriter;
@@ -10,7 +8,6 @@ import javafx.scene.paint.Color;
 import openvmf.Logger;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -23,13 +20,13 @@ import java.sql.SQLException;
 public class ServerConnection {
 
     private HttpServer httpServer;
-    private Webcam webcam;
 
     public ServerConnection() {
         try {
             httpServer = HttpServer.create(new InetSocketAddress(1235), 0);
             Logger.log("ServerConnection started successfully");
             httpServer.createContext("/", (e) -> {
+                Logger.log("Request "+e.getRequestURI().toString().replace("/", ""));
                 switch (e.getRequestURI().toString().replace("/", "")) {
                     case "getLIDAR":
                         try {
@@ -129,12 +126,12 @@ public class ServerConnection {
                         try {
                             Connection connection = DB.getConnection();
                             ResultSet resultSet = connection.createStatement().executeQuery("SELECT * FROM Settings");
-                            String out = "Settings:\n";
+                            StringBuilder out = new StringBuilder("Settings:\n");
                             while (resultSet.next()) {
-                                out += resultSet.getString(1) + ";" + resultSet.getString(2) + "\n";
+                                out.append(resultSet.getString(1)).append(";").append(resultSet.getString(2)).append("\n");
                             }
                             e.sendResponseHeaders(200, out.length());
-                            e.getResponseBody().write(out.getBytes());
+                            e.getResponseBody().write(out.toString().getBytes());
                         } catch (SQLException e1) {
                             e1.printStackTrace();
                         }
@@ -149,13 +146,6 @@ public class ServerConnection {
                             e1.printStackTrace();
                         }
                         break;
-                    case "getImage":
-                        Logger.log("Building Webcam Image");
-                        File image = new File("cam.png");
-                        ImageIO.write(webcam.getImage(), "PNG", image);
-                        e.sendResponseHeaders(201, image.length());
-                        Files.copy(image.toPath(), e.getResponseBody());
-                        break;
                     case "startManualControl":
                         break;
                     case "getCompass":
@@ -166,10 +156,6 @@ public class ServerConnection {
                 }
             });
             httpServer.start();
-            webcam = Webcam.getDefault();
-            webcam.setCustomViewSizes(new Dimension[]{WebcamResolution.HD720.getSize()});
-            webcam.setViewSize(WebcamResolution.HD720.getSize());
-            //webcam.open();
         } catch (IOException e) {
             e.printStackTrace();
         }

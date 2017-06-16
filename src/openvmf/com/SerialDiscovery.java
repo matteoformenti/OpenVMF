@@ -7,7 +7,7 @@ import openvmf.Logger;
 import openvmf.Main;
 import openvmf.Settings;
 import openvmf.nav.EngineService;
-import openvmf.nav.LidarService;
+import openvmf.nav.SonarService;
 import openvmf.nav.LocationService;
 
 import java.util.Arrays;
@@ -31,8 +31,8 @@ public class SerialDiscovery {
                                     Main.setEngineService(new EngineService(tempPort));
                                     Logger.log("Engine controller found on " + portName);
                                     break;
-                                case "lidar":
-                                    Main.setLidarService(new LidarService(tempPort));
+                                case "sonar":
+                                    Main.setSonarService(new SonarService(tempPort));
                                     Logger.log("Lidar controller found on " + portName);
                                     break;
                                 case "location":

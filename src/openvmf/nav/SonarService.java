@@ -5,29 +5,29 @@ import jssc.SerialPortException;
 import openvmf.Logger;
 import openvmf.com.DB;
 
-public class LidarService {
+public class SonarService {
     private SerialPort serialPort;
     private boolean stop = false;
 
     private int currentPosition;
 
-    public LidarService(SerialPort serialPort) {
+    public SonarService(SerialPort serialPort) {
         this.serialPort = serialPort;
         try {
             serialPort.addEventListener(serialPortEvent -> {
                 if (serialPortEvent.isRXCHAR()) {
                     try {
-                        parsePosition(serialPort.readString().replaceAll("^[\\r\\n]+|\\.|[\\r\\n]+$", ""));
+                        pareInput(serialPort.readString().replaceAll("^[\\r\\n]+|\\.|[\\r\\n]+$", ""));
                         if (!stop)
                             send((byte) 1);
                     } catch (SerialPortException e) {
-                        Logger.log("Error while reading data from LIDAR");
+                        Logger.log("Error while reading data from Sonar");
                     }
                 }
             });
-            Logger.log("LIDARService started correctly");
+            Logger.log("SonarService started correctly");
         } catch (SerialPortException e) {
-            Logger.log("Error while crating LIDARService event listener");
+            Logger.log("Error while crating SonarService event listener");
         }
         send((byte) 1);
     }
@@ -37,7 +37,7 @@ public class LidarService {
             stop = true;
             serialPort.closePort();
         } catch (SerialPortException e) {
-            Logger.log("Error while closing LIDARService");
+            Logger.log("Error while closing SonarService");
         }
     }
 
@@ -49,11 +49,11 @@ public class LidarService {
         try {
             serialPort.writeByte(in);
         } catch (SerialPortException e) {
-            Logger.log("Error while sending data to LIDAR");
+            Logger.log("Error while sending data to Sonar");
         }
     }
 
-    private void parsePosition(String in) {
+    private void pareInput (String in) {
         try {
             String fields[] = in.split(":");
             int rotation = Integer.parseInt(fields[0]) * 15;

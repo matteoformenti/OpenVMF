@@ -13,15 +13,22 @@ import java.net.InetSocketAddress;
 public class DiscoveryService {
     private HttpServer httpServer;
     private boolean stop = false;
+    private DatagramSocket serverSocket;
 
     public DiscoveryService() {
         UDPDiscovery();
         //HTTPDiscovery();
     }
 
-    private void close() {
-        httpServer.stop(0);
-        stop = true;
+    public void close() {
+        try {
+            httpServer.stop(0);
+            serverSocket.close();
+            stop = true;
+        }
+        catch (Exception ignored) {
+            stop = true;
+        }
     }
 
     private void HTTPDiscovery() {
@@ -44,7 +51,6 @@ public class DiscoveryService {
     }
 
     private void UDPDiscovery() {
-        DatagramSocket serverSocket;
         try {
             serverSocket = new DatagramSocket(Settings.DISCOVERY_PORT);
             byte[] receiveData = new byte[9];

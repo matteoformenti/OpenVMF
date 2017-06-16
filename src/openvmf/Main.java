@@ -2,17 +2,17 @@ package openvmf;
 
 import openvmf.com.*;
 import openvmf.nav.EngineService;
-import openvmf.nav.LidarService;
+import openvmf.nav.SonarService;
 import openvmf.nav.LocationService;
 
 public class Main {
-    private static LidarService lidarService;
+    private static SonarService sonarService;
     private static EngineService engineService;
     private static LocationService locationService;
     private static ControlServer controlServer;
 
     public static void main(String args[]) {
-        new DB("omega", "Task634Keep");
+        new DB("root", "Task634Keep");
         Settings.init();
         DiscoveryService discoveryService = new DiscoveryService();
         ServerConnection serverConnection = new ServerConnection();
@@ -20,12 +20,8 @@ public class Main {
         controlServer = new ControlServer();
     }
 
-    public static ControlServer getControlServer() {
-        return controlServer;
-    }
-
-    public static void setLidarService(LidarService lidarService) {
-        Main.lidarService = lidarService;
+    public static void setSonarService(SonarService sonarService) {
+        Main.sonarService = sonarService;
     }
 
     public static EngineService getEngineService() {

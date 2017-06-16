@@ -8,8 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DB {
-    private static final String DB_IP = "10.3.1.147";
-    //private static final String DB_IP = "localhost";
+    //private static final String DB_IP = "10.3.1.147";
+    private static final String DB_IP = "localhost";
     //private static final String DB_IP = "10.42.0.163";
     private static Connection dbConnection;
 

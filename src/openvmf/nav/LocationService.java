@@ -22,13 +22,13 @@ public class LocationService {
                         if (!stop)
                             send((byte) 1);
                     } catch (SerialPortException e) {
-                        Logger.log("Error while reading data from LIDAR");
+                        Logger.log("Error while reading data from location");
                     }
                 }
             });
-            Logger.log("LIDARService started correctly");
+            Logger.log("LocationService started correctly");
         } catch (SerialPortException e) {
-            Logger.log("Error while crating LIDARService event listener");
+            Logger.log("Error while crating LocationService event listener");
         }
         send((byte) 1);
     }
