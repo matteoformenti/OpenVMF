@@ -68,10 +68,6 @@ function adjustCompassDirection(IP) {
     $("#compass-arrow-img").css("transform", "rotate(" + deg + "deg)");
 }
 
-function getDirectionCompass(IP) {
-    $("#direction").find("img").attr("src", 'http://' + IP + '/getCompass');
-}
-
 function checkConnection() {
     let ipList = new Array;
 

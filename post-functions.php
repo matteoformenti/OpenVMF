@@ -42,7 +42,7 @@ if (isset($_POST['function']))
         $out .= "Data bits§" . $vehicle->dataBits . ";";
         $out .= "Added date§" . $vehicle->addedDate;
         echo $out;
-        http://openvmf.local/img/default.png
+
         die();
 
     } else if ($_POST['function'] === "discovery")

@@ -64,7 +64,7 @@ $user_obj = $query_user->fetch_object();
                 <i class="material-icons left">
                     <?php
                     switch ($vehicle->type) {
-                        case "terrain":
+                        case "car":
                             echo "directions_car";
                             break;
 
