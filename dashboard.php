@@ -120,7 +120,7 @@ include_once('header.php'); ?>
                 <div class="col s12 m6">
                     <div class="card" id="lidar">
                         <div class="card-content no-padding" style="line-height: 0">
-                            <img src="img/no-lidar.svg" width="100%" alt="LIDAR image" title="LIDAR" id="img-lidar">
+                            <img src="img/no-sonar.svg" width="100%" alt="LIDAR image" title="LIDAR" id="img-lidar">
                         </div>
                     </div>
                 </div>
