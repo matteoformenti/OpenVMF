@@ -21,7 +21,7 @@
 function createConnection()
 {
 //     return new mysqli("10.0.0.4", "openvmf", "Task634Keep", "openvmf");
-    return new mysqli("localhost", "root", "meT@416Uly", "openVMF");
+    return new mysqli("localhost", "root", "Task634Keep", "openVMF");
 }
 
 function queryDB($query)

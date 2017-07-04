@@ -57,7 +57,8 @@ function getMap(IP) {
 }
 
 function getImage(IP) {
-    $("#cam").find("img").attr("src", 'http://' + IP + '/getImage');
+    let newIP = IP.split(":")[0];
+    $("#cam").find("img").attr("src", 'http://' + newIP + ':8081');
 }
 
 function adjustCompassDirection(IP) {
@@ -127,7 +128,7 @@ function openVehicleModal(vehicleID) {
             if (splitVehicle[0] === "Name")
                 vehicleName = splitVehicle[1];
             else if (splitVehicle[0] === "Type") {
-                switch (vehicleInfo[1]) {
+                switch (splitVehicle[1]) {
                     case "terrain":
                         vehicleIcon = "directions_car";
                         break;
@@ -143,7 +144,10 @@ function openVehicleModal(vehicleID) {
                 }
             }
             else if (splitVehicle[0] === "Status") {
-                vehicleContentDiv.append("<h3 class='no-margin'><i class='material-icons right medium blue-text text-accent-3'>" + vehicleIcon + "</i> " + vehicleName + " <span style='font-size: 45%' class='uppercase blue-text'>" + splitVehicle[1] + "</span></h3>");
+                if (splitVehicle[1] !== "warning")
+                    vehicleContentDiv.append("<h3 class='no-margin'><i class='material-icons right medium blue-text text-accent-3'>" + vehicleIcon + "</i> " + vehicleName + " <span style='font-size: 45%' class='uppercase blue-text'>" + splitVehicle[1] + "</span></h3>");
+                else
+                    vehicleContentDiv.append("<h3 class='no-margin'><i class='material-icons right medium blue-text text-accent-3'>" + vehicleIcon + "</i> " + vehicleName + " <span style='font-size: 45%' class='uppercase red-text'>" + splitVehicle[1] + " <small>(Connection lost: 2017-04-19 16:44:21)</small></span></h3>");
             }
             else
                 vehicleTable += "<tr><td>" + splitVehicle[0] + "</td><td>" + splitVehicle[1] + "</td></tr>";
